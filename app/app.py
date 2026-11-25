@@ -319,9 +319,16 @@ def page():
     """
 
 
-    cmd = request.args.get("cmd")
+    cmd = request.args.get("cmd", "")
+    commands = {
+        "list": ["ls"],
+        "stat": ["stat", "."],
+    }
 
-    return subprocess.check_output(cmd, shell=True)
+    if cmd not in commands:
+        return "Unsupported command", 400
+
+    return subprocess.check_output(commands[cmd], shell=False)
     # command_to_be_executed = ['cat', '/']
     # return subprocess.check_output(command_to_be_executed, shell=True)
 
